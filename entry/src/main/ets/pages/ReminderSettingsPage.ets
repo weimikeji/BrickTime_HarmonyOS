@@ -248,33 +248,34 @@ export struct ReminderSettingsPage {
   }
 
   build() {
-    Stack({ alignContent: Alignment.Bottom }) {
-      Scroll() {
-        Column() {
-          AppNavigationBar({
-            title: '提醒设置',
-            titleColor: this.titleColor,
-            surfaceColor: this.surfaceColor
-          });
+    Stack() {
+      Column() {
+        AppNavigationBar({
+          title: '提醒设置',
+          titleColor: this.titleColor,
+          surfaceColor: this.surfaceColor
+        });
 
+        Scroll() {
           Column() {
             this.NotificationSection();
             this.TipsCard();
           }
           .width('100%')
+          .alignItems(HorizontalAlign.End)
           .padding({ left: 12, right: 12, bottom: 32 });
         }
-        .justifyContent(FlexAlign.Start)
-        .alignItems(HorizontalAlign.Start)
-        .width('100%');
+        .width('100%')
+        .layoutWeight(1)
+        .backgroundColor(this.pageBackground)
+        .scrollBar(BarState.Off)
+        .onClick(() => {
+          this.dismissKeyboard();
+        });
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pageBackground)
-      .scrollBar(BarState.Off)
-      .onClick(() => {
-        this.dismissKeyboard();
-      });
+      .backgroundColor(this.pageBackground);
 
       if (this.activeSheet !== '') {
         this.ModalOverlay();
@@ -290,7 +291,7 @@ export struct ReminderSettingsPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pageBackground)
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM]);
+    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM]);
   }
 
   @Builder

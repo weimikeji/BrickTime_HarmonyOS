@@ -3,7 +3,7 @@ import { storageService } from '../services/StorageService';
 import { DateUtils } from '../utils/DateUtils';
 import { EventBus, Events } from '../services/EventBus';
 import { TagStyleUtils } from '../utils/TagStyleUtils';
-import { AppNavigationBar } from '../components/AppNavigationBar';
+import { RouterManager } from '../router/RouterManager';
 import { TagIcon } from '../components/TagIcon';
 
 interface ColorOption {
@@ -241,17 +241,7 @@ export struct TagManagePage {
     Stack({ alignContent: Alignment.Bottom }) {
       Scroll() {
         Column() {
-          AppNavigationBar({
-            title: '标签管理',
-            titleColor: this.titleColor,
-            surfaceColor: this.surfaceColor,
-            rightText: '+',
-            rightBackgroundColor: this.mintColor,
-            rightTextColor: '#FFFFFF',
-            onRightTap: () => {
-              this.openCreateEditor();
-            }
-          });
+          this.Header();
 
           Column() {
             Text('现有标签')
@@ -292,6 +282,49 @@ export struct TagManagePage {
     .width('100%')
     .height('100%')
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM]);
+  }
+
+  @Builder
+  Header() {
+    Row() {
+      Button() {
+        Text('←')
+          .fontSize(17)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.titleColor);
+      }
+      .width(28)
+      .height(28)
+      .backgroundColor(this.surfaceColor)
+      .borderRadius(14)
+      .onClick(() => {
+        RouterManager.goBack();
+      });
+
+      Text('标签管理')
+        .layoutWeight(1)
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.titleColor)
+        .textAlign(TextAlign.Center)
+        .margin({ left: 8 });
+
+      Button() {
+        Text('+')
+          .fontSize(21)
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#FFFFFF');
+      }
+      .width(28)
+      .height(28)
+      .backgroundColor(this.mintColor)
+      .borderRadius(14)
+      .onClick(() => {
+        this.openCreateEditor();
+      });
+    }
+    .width('100%')
+    .padding({ left: 12, right: 12, top: 10, bottom: 18 });
   }
 
   @Builder

@@ -21,8 +21,6 @@ export struct TagDetailPage {
   private readonly shadowColor: string = '#12000000';
   private readonly dismissFocusId: string = 'tagDetailDismissFocus';
   private readonly lineColor: string = '#EEF2F7';
-  private readonly navigationHeight: number = 28;
-  private readonly navigationGap: number = 18;
 
   @State tagId: string = '';
   @State tag: Tag | null = null;
@@ -82,20 +80,16 @@ export struct TagDetailPage {
   }
 
   build() {
-    Stack({ alignContent: Alignment.TopStart }) {
-      if (!this.tag) {
-        Column() {
-          this.NavigationSpacer();
-          this.EmptyState();
-        }
-        .width('100%')
-        .height('100%')
-        .justifyContent(FlexAlign.Start)
-        .padding({ left: 12, right: 12 })
-        .backgroundColor(this.pageBackground)
-        .onClick(() => {
-          focusControl.requestFocus(this.dismissFocusId);
+    Stack() {
+      Column() {
+        AppNavigationBar({
+          title: this.tag?.name ?? '标签详情',
+          titleColor: this.titleColor,
+          surfaceColor: this.surfaceColor
         });
+
+      if (!this.tag) {
+          this.EmptyState();
       } else {
         Scroll() {
           Column() {
@@ -108,23 +102,23 @@ export struct TagDetailPage {
           .padding({
             left: 12,
             right: 12,
-            top: 10 + this.navigationHeight + this.navigationGap,
             bottom: 24
           });
         }
         .width('100%')
-        .height('100%')
+        .layoutWeight(1)
         .backgroundColor(this.pageBackground)
         .scrollBar(BarState.Off)
         .onClick(() => {
           focusControl.requestFocus(this.dismissFocusId);
         });
       }
-
-      AppNavigationBar({
-        title: this.tag?.name ?? '标签详情',
-        titleColor: this.titleColor,
-        surfaceColor: this.surfaceColor
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor(this.pageBackground)
+      .onClick(() => {
+        focusControl.requestFocus(this.dismissFocusId);
       });
 
       Column()
@@ -138,13 +132,6 @@ export struct TagDetailPage {
     .height('100%')
     .backgroundColor(this.pageBackground)
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM]);
-  }
-
-  @Builder
-  NavigationSpacer() {
-    Blank()
-      .width('100%')
-      .height(10 + this.navigationHeight + this.navigationGap);
   }
 
   @Builder
